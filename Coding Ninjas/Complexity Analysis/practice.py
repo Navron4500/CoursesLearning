@@ -1,111 +1,75 @@
-from sys import stdin
-
-def mergeSort(arr):
-    if len(arr) > 1:
- 
-         # Finding the mid of the array
-        mid = len(arr)//2
- 
-        # Dividing the array elements
-        L = arr[:mid]
- 
-        # into 2 halves
-        R = arr[mid:]
- 
-        # Sorting the first half
-        mergeSort(L)
- 
-        # Sorting the second half
-        mergeSort(R)
- 
-        i = j = k = 0
- 
-        # Copy data to temp arrays L[] and R[]
-        while i < len(L) and j < len(R):
-            if L[i] < R[j]:
-                arr[k] = L[i]
-                i += 1
-            else:
-                arr[k] = R[j]
-                j += 1
-            k += 1
- 
-        # Checking if any element was left
-        while i < len(L):
-            arr[k] = L[i]
-            i += 1
-            k += 1
- 
-        while j < len(R):
-            arr[k] = R[j]
-            j += 1
-            k += 1
-
-
-
-def intersection(arr1, arr2, n, m) :
-	#Your code goes here
-    mergeSort(arr1)
-    mergeSort(arr2)
-    i = 0
-    j = 0 
-    while i<n and j<m:
-        while arr1[i]>=arr2[j] and i<m and j<n:
-            if arr1[i] == arr2[j]:
-                print(arr1[i])
-                j += 1
-                break
-            j += 1
-        i += 1
-        
-
-t = int(input())
-for _ in range(t):
-    m = int(input(""))
-    m_list = list(map(int,input().split()))
-    n = int(input(""))
-    n_list = list(map(int,input().split()))
-    print(intersection(m_list1,n_list,m,n))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Taking input using fast I/O method
-def takeInput() :
-    n = int(stdin.readline().strip())
+# def sum_array(arr,n,num):
+#     arr.sort()
+#     i = 0
+#     j = n-1
+#     cnt = 0
+#     while i<j:
+#         s = arr[i]+arr[j]
+#         if s>num:
+#             j -= 1
+#         elif s<num:
+#             i += 1
+#         else:
+#             ai = int(arr[i+1] == arr[i] and i+1 != j) + int(arr[i] + arr[i+1]==num and i+1 != j)
+#             aj = int(arr[j-1] == arr[j] and j-1 != i) + int(arr[j] + arr[j-1] == num and j-1 != i)
+#             cnt += 1 + ai  + aj
+#             i += 1
+#             j -= 1
     
-    if n == 0 :
-    	return list(), 0
+#     # if n%2 != 0:
+#     #     return cnt-1
+#     return cnt
 
-    arr = list(map(int, stdin.readline().strip().split(" ")))
-    return arr, n
+def pairs_count(arr, n, sum):
+     
+    # To store the count of pairs
+    ans = 0
+ 
+    # Sort the given array
+    arr = sorted(arr)
+ 
+    # Take two pointers
+    i, j = 0, n - 1
+ 
+    while (i < j):
+         
+        # If sum is greater
+        if (arr[i] + arr[j] < sum):
+            i += 1
+ 
+        # If sum is lesser
+        elif (arr[i] + arr[j] > sum):
+            j -= 1
+             
+        # If sum is equal
+        else:
+             
+            # Find the frequency of arr[i]
+            x = arr[i]
+            xx = i
+            while (i < j and arr[i] == x):
+                i += 1
+ 
+            # Find the frequency of arr[j]
+            y = arr[j]
+            yy = j
+            while (j >= i and arr[j] == y):
+                j -= 1
+ 
+            # If arr[i] and arr[j] are same
+            # then remove the extra number counted
+            if (x == y):
+                temp = i - xx + yy - j - 1
+                ans += (temp * (temp + 1)) // 2
+            else:
+                ans += (i - xx) * (yy - j)
+ 
+    # Return the required answer
+    return ans
 
 
-#main
-t = int(stdin.readline().strip())
-
-while t > 0 :
-
-    arr1, n = takeInput()
-    arr2, m = takeInput()
-    intersection(arr1, arr2, n, m)
-    print()
-
-    t -= 1
+arr = list(map(int,input().split()))
+num = int(input())
+# arr = [1, 5, 7, -1,5]
+# num = 6
+print(pairs_count(arr,len(arr),num))
