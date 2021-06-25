@@ -5,12 +5,12 @@ class Node :
 
 def takeinput():
     inputList = list(map(int,input().split()))
-    inputList.append(int(-1))
+    # inputList.append(int(-1))
     head = None
     tail = None
     for ele in inputList:
-        if ele == -1:
-            break
+        # if ele == -1:
+        #     break
         
         NewNode = Node(ele)
         if not head:
@@ -22,15 +22,7 @@ def takeinput():
 
     return head
 
-def printLL(head):
-    while head:
-        print(f"{head.data}->",end="")
-        head = head.next
-    print("None")
-    return
-
-
-def length(head) :
+def lengthLL(head) :
     #Your code goes here
     lengthOfLL = 0
     while head:
@@ -39,44 +31,62 @@ def length(head) :
 
     return lengthOfLL
 
-def printIthNode(head, i):
-    if length(head) < i:
-        return
-    index = 0
+def printLL(head):
     while head:
-        if index == i:
-            print(head.data)
-            return
-        index += 1
+        print(f"{head.data}->",end="")
         head = head.next
+    print("None")
+    return
 
-def insertAtI(head,i,data):
-    
-    if i<0 or length(head) < i:
+def deleteNodeR(head, pos) :
+    if pos<0:
         return head
-    
-    count = 0
-    prev = None
-    curr = head
-    while count < i:
-        prev = curr
-        curr = curr.next
-        count += 1
 
-    newNode = Node(data)
-    if not i:
-        head = newNode
-    else:
-        prev.next = newNode
-    newNode.next = curr
+    if not head:
+        return None
 
+    if pos == 0:
+        return head.next
+
+    smallhead = deleteNodeR(head.next,pos-1)
+    head.next = smallhead
     return head
     
+def findNode(head, n) :
+    index = 0
+    while head:
+        if head.data == n:
+            return index
+        head = head.next
+        index += 1
+    
+    return -1    
 
+def appendLastNToFirst(head, n):
+    Length = length(head)
+    find = Length - n
+    index = 0
+    
+    prev = None
+    curr = head
+    while index < find:
+        prev = curr
+        curr = curr.next
+        index += 1
+    
+    prev.next = None
+    prev = curr
 
+    while curr.next:
+        curr = curr.next
+
+    curr.next = head
+    head = prev
+
+    return head
 
 head = takeinput()
 printLL(head)
-# print(length(head))
-head = insertAtI(head,6,99)
+# head.data, head.next.next.data = head.next.next.data, head.data
+head = appendLastNToFirst(head,5)
 printLL(head)
