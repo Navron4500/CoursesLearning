@@ -52,30 +52,34 @@ six  = tk.Button(Calculator,text="6",command=lambda: insert("6"))
 seven  = tk.Button(Calculator,text="7",command=lambda: insert("7")) 
 eight  = tk.Button(Calculator,text="8",command=lambda: insert("8")) 
 nine  = tk.Button(Calculator,text="9",command=lambda: insert("9")) 
-zero  = tk.Button(Calculator,text="0",command=lambda: insert("0")) 
-
+zero  = tk.Button(Calculator,text="0",width=3,command=lambda: insert("0")) 
+blankLabel = tk.Label(Calculator,text="",height=2)
 
 # Adding buttons
-ip.place(height=100)
+ip.place(height=30)
+blankLabel.grid(row=0,column=6)
 
-# addBt.grid(row=,column=)
-# subsBt.pack()
-# multiBt.pack()
-# divBt.pack()
+addBt.grid(row=1,column=3)
+subsBt.grid(row=1,column=4)
+multiBt.grid(row=2,column=3)
+divBt.grid(row=2,column=4)
 
-# one.pack()
-# two.pack()
-# three.pack()
-# four.pack()
-# five.pack()
-# six.pack()
-# seven.grid(row=1,column=0)
-# eight.grid(row=2,column=1)
-# nine.grid(row=3,column=2)
-# zero.pack()
+one.grid(row=3,column=0)
+two.grid(row=3,column=1)
+three.grid(row=3,column=2)
 
-# equalBt.pack()
-# clearBt.pack()
+four.grid(row=2,column=0)
+five.grid(row=2,column=1)
+six.grid(row=2,column=2)
+
+seven.grid(row=1,column=0)
+eight.grid(row=1,column=1)
+nine.grid(row=1,column=2)
+
+zero.grid(row=4,column=0)
+
+equalBt.grid(row=3,column=3)
+clearBt.grid(row=3,column=4)
 
 
 Calculator.mainloop()
