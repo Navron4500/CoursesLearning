@@ -62,31 +62,22 @@ def findNode(head, n) :
     
     return -1    
 
-def appendLastNToFirst(head, n):
-    Length = length(head)
-    find = Length - n
-    index = 0
-    
-    prev = None
-    curr = head
-    while index < find:
-        prev = curr
-        curr = curr.next
-        index += 1
-    
-    prev.next = None
-    prev = curr
+def isPalindrome(head) :    
+    front = ""
+    back = ""
+    while head:
+        front = str(head.data) + front
+        back += str(head.data)
+        head = head.next
 
-    while curr.next:
-        curr = curr.next
+    return front==back
 
-    curr.next = head
-    head = prev
 
-    return head
+
+
 
 head = takeinput()
 printLL(head)
 # head.data, head.next.next.data = head.next.next.data, head.data
-head = appendLastNToFirst(head,5)
-printLL(head)
+print(isPalindrome(head))
+# printLL(head)
