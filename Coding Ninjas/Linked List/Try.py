@@ -22,62 +22,74 @@ def takeinput():
 
     return head
 
-def lengthLL(head) :
-    #Your code goes here
-    lengthOfLL = 0
-    while head:
-        lengthOfLL += 1
-        head = head.next
-
-    return lengthOfLL
-
 def printLL(head):
     while head:
         print(f"{head.data}->",end="")
         head = head.next
     print("None")
     return
+ 
 
-def deleteNodeR(head, pos) :
-    if pos<0:
-        return head
+def mergeTwoSortedLinkedLists(head1, head2):
+    finalHead, tail = None, None
+    
+    if head1.data <= head2.data:
+        finalHead, tail = head1, head1
+        head1 = head1.next
+    elif head2.data < head1.data:
+        finalHead, tail = head2, head2
+        head2 = head2.next
 
+    while head1 and head2:
+        if head1.data <= head2.data:
+            tail.next = head1
+            tail = tail.next
+            head1 = head1.next
+
+        elif head2.data < head1.data:
+            tail.next = head2
+            tail = tail.next
+            head2 = head2.next
+
+    if head1:
+        tail.next = head1
+        tail = tail.next
+        head1 = head1.next
+
+    if head2:
+        tail.next = head2
+        tail = tail.next
+        head2 = head2.next
+
+    return finalHead
+
+def midPoint(head):
+    slow , fast= head, head
+    while fast.next and fast.next.next:
+        slow = slow.next
+        fast = fast.next.next
+
+    return slow
+
+
+def mergeSortLL(head):
     if not head:
         return None
-
-    if pos == 0:
-        return head.next
-
-    smallhead = deleteNodeR(head.next,pos-1)
-    head.next = smallhead
-    return head
     
-def findNode(head, n) :
-    index = 0
-    while head:
-        if head.data == n:
-            return index
-        head = head.next
-        index += 1
-    
-    return -1    
+    if not head.next:
+        return head
 
-def isPalindrome(head) :    
-    front = ""
-    back = ""
-    while head:
-        front = str(head.data) + front
-        back += str(head.data)
-        head = head.next
+    mid = midPoint(head)
+    head2 = mid.next
+    mid.next = None
+    head1 = mergeSortLL(head)
+    head2 = mergeSortLL(head2)
 
-    return front==back
-
-
-
+    return mergeTwoSortedLinkedLists(head1, head2)
 
 
 head = takeinput()
 printLL(head)
-# head.data, head.next.next.data = head.next.next.data, head.data
-print(isPalindrome(head))
-# printLL(head)
+
+head = mergeSortLL(head)
+printLL(head)
