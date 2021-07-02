@@ -1,30 +1,24 @@
-class Stack:
-    
-    def __init__(self):
-        self.__data = []
+def stockSpan(price, n) :
+    stack = []
+    op = []
+    for index,value in enumerate(price):
+        if (index == 0 or price[stack[-1]]>value):
+            op.append(1)
+            stack.append(index)
 
-    def push(self,item):
-        if self.isEmpty():
-            print("Stack is empty")
-            return 
-        self.__data.append(item)
+        else:
+            while stack and price[stack[-1]] < value:
+                stack.pop()
+            
+            if stack:
+                op.append(index-stack[-1])
+            else:
+                op.append(index+1)
+            
+            stack.append(index)
+    return op
 
-    def pop(self):
-        if self.isEmpty():
-            print("Stack is empty")
-            return 
-        self.__data.pop()
+arr = [100, 80, 60, 70, 60, 75, 85]
 
-    def isEmpty(self):
-        return len(self.__data) == 0
-
-    def top(self):
-        if self.isEmpty():
-            print("Stack is empty")
-            return
-        return self.__data[-1]
-
-    def size(self):
-        return len(self.__data)
-
-s = 
+# arr = list(map(int,input().split()))
+print(stockSpan(arr,len(arr)))
