@@ -61,24 +61,52 @@ def levelWiseTreeInput():
     return root
 
 
-def NodePath(root,node):
+def printSubTreeNodes(root,k):
     if not root:
-        return []
+        return
     
-    if root.data == node:
-        a = []
-        a.append(str(root.data))
-        return 
+    if k == 0:
+        print(root.data)
+        return
+
+    printSubTreeNodes(root.left,k-1)
+    printSubTreeNodes(root.right,k-1)
+
+
+def printNodeAtK(root,target, k):
+    if not root:
+        return -1
     
-    left = NodePath(root.left,node)
-    right = NodePath(root.right,node)
-    if left:
-        val = root.data+""
+    if root.data == target:
+        printSubTreeNodes(root,k)
+        return 0
+
+    dL = printNodeAtK(root.left,target,k)
+    if dL != -1:
+        if dL + 1 == k:
+            print(root.data)
+        
+        else:
+            printSubTreeNodes(root.right,k-dL-2)
+        
+        return 1+dL
+
+    dR = printNodeAtK(root.left,target,k)
+    if dR != -1:
+        if dR + 1 == k:
+            print(root.data)
+        
+        else:
+            printSubTreeNodes(root.right,k-dR-2)
+        
+        return 1+dR
+    
+    return -1
 
 
 
 
 
 root = levelWiseTreeInput()
-rootToLeafPathsSumToK(root,13)
+printNodeAtK(root,5,2)
 # printLevelWise(root)
