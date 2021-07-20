@@ -91,13 +91,13 @@ def printNodeAtK(root,target, k):
         
         return 1+dL
 
-    dR = printNodeAtK(root.left,target,k)
+    dR = printNodeAtK(root.right,target,k)
     if dR != -1:
         if dR + 1 == k:
             print(root.data)
         
         else:
-            printSubTreeNodes(root.right,k-dR-2)
+            printSubTreeNodes(root.left,k-dR-2)
         
         return 1+dR
     
