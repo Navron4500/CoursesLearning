@@ -108,5 +108,5 @@ def printNodeAtK(root,target, k):
 
 
 root = levelWiseTreeInput()
-printNodeAtK(root,5,2)
+printNodeAtK(root,10,2)
 # printLevelWise(root)
