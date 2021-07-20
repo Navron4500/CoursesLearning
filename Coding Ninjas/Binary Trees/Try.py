@@ -1,4 +1,5 @@
 import queue
+from threading import current_thread
 class BinaryTreeNode:
     def __init__(self,data):
         self.data = data
@@ -16,10 +17,10 @@ def printLevelWise(root):
         current_node = q.get()
         print(current_node.data,end=":")
         if current_node.left:
-            print("L:" + str(current_node.left.data),end=",")
+            print("L:" + str(current_node.left.data),end=", ")
             q.put(current_node.left)
         else:
-            print("L: ",end=",")
+            print("L: ",end=", ")
             
             
         if current_node.right:
@@ -29,7 +30,6 @@ def printLevelWise(root):
             print("R: ",end=" ")
         
         print("")
-
 
 
 def levelWiseTreeInput():
@@ -60,20 +60,25 @@ def levelWiseTreeInput():
 
     return root
 
-def buildTree(postOrder, inOrder, n) :
-    if len(postOrder) <= 0 or len(inOrder) <= 0 or n <= 0:
-        return None
 
-    root = BinaryTreeNode(int(postOrder[-1]))
-    root_index = inOrder.index(postOrder[-1])
-    postOrder = postOrder[:-1]
-    LeftIO, RightIO = inOrder[:root_index], inOrder[root_index+1:]
-    LeftPO, RightPO = postOrder[:len(LeftIO)], postOrder[ -len(RightIO):]
-    root.left, root.right = buildTree(LeftPO,LeftIO,len(LeftIO)), buildTree(RightPO, RightIO, len(RightPO))
-    return root
+def NodePath(root,node):
+    if not root:
+        return []
+    
+    if root.data == node:
+        a = []
+        a.append(str(root.data))
+        return 
+    
+    left = NodePath(root.left,node)
+    right = NodePath(root.right,node)
+    if left:
+        val = root.data+""
 
-list1 = [4,5,2,6,7,3,1]
-list2 = [4,2,5,1,6,3,7]
-root = buildTree(list1, list2, len(list1))
-printLevelWise(root)
 
+
+
+
+root = levelWiseTreeInput()
+rootToLeafPathsSumToK(root,13)
+# printLevelWise(root)
