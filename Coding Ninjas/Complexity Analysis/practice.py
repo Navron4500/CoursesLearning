@@ -1,75 +1,64 @@
-# def sum_array(arr,n,num):
-#     arr.sort()
-#     i = 0
-#     j = n-1
-#     cnt = 0
-#     while i<j:
-#         s = arr[i]+arr[j]
-#         if s>num:
-#             j -= 1
-#         elif s<num:
-#             i += 1
-#         else:
-#             ai = int(arr[i+1] == arr[i] and i+1 != j) + int(arr[i] + arr[i+1]==num and i+1 != j)
-#             aj = int(arr[j-1] == arr[j] and j-1 != i) + int(arr[j] + arr[j-1] == num and j-1 != i)
-#             cnt += 1 + ai  + aj
-#             i += 1
-#             j -= 1
+# Python program for implementation of MergeSort
+def mergeSort(arr):
+	if len(arr) > 1:
+
+		# Finding the mid of the array
+		mid = len(arr)//2
+
+		# Dividing the array elements
+		L = arr[:mid]
+
+		# into 2 halves
+		R = arr[mid:]
+
+		# Sorting the first half
+		mergeSort(L)
+
+		# Sorting the second half
+		mergeSort(R)
+
+		i = j = k = 0
+
+		# Copy data to temp arrays L[] and R[]
+		while i < len(L) and j < len(R):
+			if L[i] < R[j]:
+				arr[k] = L[i]
+				i += 1
+			else:
+				arr[k] = R[j]
+				j += 1
+			k += 1
+
+		# Checking if any element was left
+		while i < len(L):
+			arr[k] = L[i]
+			i += 1
+			k += 1
+
+		while j < len(R):
+			arr[k] = R[j]
+			j += 1
+			k += 1
+
+
+
+def intersect(a1,a2):
+    mergeSort(a1)
+    mergeSort(a2)
+    i = 0
+    j = 0
+    op = []
+    while i<len(a1):
+        while a1[i]>=a2[j]:
+            if a1[i] == a2[j]:
+                op.append(a1[i])
+                break
+            j += 1
     
-#     # if n%2 != 0:
-#     #     return cnt-1
-#     return cnt
+    return op
 
-def pairs_count(arr, n, sum):
-     
-    # To store the count of pairs
-    ans = 0
- 
-    # Sort the given array
-    arr = sorted(arr)
- 
-    # Take two pointers
-    i, j = 0, n - 1
- 
-    while (i < j):
-         
-        # If sum is greater
-        if (arr[i] + arr[j] < sum):
-            i += 1
- 
-        # If sum is lesser
-        elif (arr[i] + arr[j] > sum):
-            j -= 1
-             
-        # If sum is equal
-        else:
-             
-            # Find the frequency of arr[i]
-            x = arr[i]
-            xx = i
-            while (i < j and arr[i] == x):
-                i += 1
- 
-            # Find the frequency of arr[j]
-            y = arr[j]
-            yy = j
-            while (j >= i and arr[j] == y):
-                j -= 1
- 
-            # If arr[i] and arr[j] are same
-            # then remove the extra number counted
-            if (x == y):
-                temp = i - xx + yy - j - 1
-                ans += (temp * (temp + 1)) // 2
-            else:
-                ans += (i - xx) * (yy - j)
- 
-    # Return the required answer
-    return ans
+a = [1,2,3,4,5,6,7,9,10]
+b = [2,4,6,8,10]
+print(intersect(a,b))
 
 
-arr = list(map(int,input().split()))
-num = int(input())
-# arr = [1, 5, 7, -1,5]
-# num = 6
-print(pairs_count(arr,len(arr),num))
