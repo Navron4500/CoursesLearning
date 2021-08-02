@@ -9,21 +9,22 @@ class MapNode:
 class Map:
 
     def __init__(self):
-        self.bucketSize = 10
+        self.bucketSize = 5
         self.buckets = [None for i in range(self.bucketSize)]
         self.count = 0
     
     def size(self):
         return self.count
 
-    def getBuckIndex(self,hc):
+    def compresionFunction(self,hc):
         return abs(hc)%(self.bucketSize)
 
-
     def insert(self,key,value):
+        # Time Complexity = O(1)
+        # Due to load factor < 0.7 (Reharsing)
 
         hc = hash(key)
-        index = self.getBuckIndex(hc)
+        index = self.compresionFunction(hc)
         head = self.buckets[index]
         
         while head is not None:
@@ -31,15 +32,19 @@ class Map:
                 head.value = value
                 return 
             head = head.next
-        
+
+        head = self.buckets[index]        
         newNode = MapNode(key,value)
         newNode.next = head
         self.buckets[index] = newNode
         self.count += 1
+        loadFactor = self.count/self.bucketSize
+        if loadFactor >= 0.7:
+            self.rehash()
          
     def remove(self,key):
         hc = hash(key)
-        index = self.getBuckIndex(hc)
+        index = self.compresionFunction(hc)
         
         prev = None
         head = self.buckets[index]
@@ -51,6 +56,7 @@ class Map:
                 else:
                     prev.next = head.next
                 
+                self.count -= 1
                 self.buckets[index] = prev
                 return head.value
 
@@ -59,7 +65,7 @@ class Map:
 
     def search(self,key):
         hc = hash(key)
-        index = self.getBuckIndex(hc)
+        index = self.compresionFunction(hc)
         head = self.buckets[index]
         while head is not None:
             if head.key == key:
@@ -67,13 +73,26 @@ class Map:
             head = head.next
         return None
 
+    def rehash(self):
+        temp = self.buckets
+        self.buckets = [None for i in range(2*self.bucketSize)]
+        self.bucketSize *= 2
+        self.count = 0
+
+        for head in temp:
+            while head is not None:
+                self.insert(head.key,head.value)
+                head = head.next
+
+    def loadFactor(self):
+        return self.count / self.bucketSize
 
 
 m = Map()
-# print(m.size())
-m.insert("Rohan",7)
-# print(m.size())
-m.insert("Naveen",10)
-# print(m.size())
-print(m.remove("Naveen"))
-print(m.search("Naveen"))
+for i in range(10):
+    m.insert("abc" + str(i), i+1)
+    print(m.loadFactor())
+
+for i in range(10):
+    print("abc" + str(i)+":", m.search("abc" + str(i)))
+    
