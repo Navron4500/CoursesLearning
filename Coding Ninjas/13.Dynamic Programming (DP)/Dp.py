@@ -1,39 +1,31 @@
-from sys import stdin
+import sys
+sys.setrecursionlimit(10**4)
+def mcm(p, i, j, dp):
 
-def knapsack(weights, values, n, maxWeight):
-    if maxWeight <= 0:
+    if i == j:
         return 0
-    
-    if n == 1:
-        return values[0]
-    
-    excluding_Ans = knapsack(weights[1:],values[1:],n-1,maxWeight) # EXCLUDING
 
-    Including_Ans = weights[0] +  knapsack(weights[1:],values[1:],n-1,maxWeight - weights[0])   # INCLUDING
+    minCost = sys.maxsize
+    for k in range(i,j):
+        if dp[i][k] == -1:
+            ans1 = mcm(p,i,k,dp)
+            dp[i][k] = ans1
+        else:
+            ans1 = dp[i][k]
+        
+        if dp[k+1][j] == -1:
+            ans2 = mcm(p,k+1,j,dp)
+            dp[k+1][j] = ans2
+        else:
+            ans2 = dp[k+1][j]
 
-    return max(excluding_Ans,Including_Ans)
+        cost = ans1 + ans2 + (p[i-1 ] * p[k] * p[j])
+        minCost = min(minCost,cost)
 
-
-
-	
-
-def takeInput() :
-    n = int(stdin.readline().rstrip())
-
-    if n == 0 :
-        return list(), list(), n, 0
-
-    weights = list(map(int, stdin.readline().rstrip().split(" ")))
-    values = list(map(int, stdin.readline().rstrip().split(" ")))
-    maxWeight = int(stdin.readline().rstrip())
-
-    return weights, values, n, maxWeight
+    return minCost
 
 
-#main
-# weights, values, n, maxWeight = takeInput()
 
-# weights, values, n, maxWeight =[1,2,4,5],[5,4,8,6],4,5 # 13
-weights, values, n, maxWeight = [12,7,11,8,9],[24,13,23,15,16],5,26 # 51
-
-print(knapsack(weights, values, n, maxWeight))
+p,n = [10,15,20,25], 3 # 8000
+dp = [[-1 for i in range(len(p))] for _ in range(len(p))]
+print(mcm(p, 1, n, dp))
