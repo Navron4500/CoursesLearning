@@ -1,13 +1,25 @@
-# WORKING ON SMALL OUTPUT FOR CREATING NEW OUTPUT
-def subsequences(s, soFar = ""):
-    if len(s) == 0: 
+def keypad(n,d, soFar=""):
+    if n == 0:
         print(soFar)
         return
+    
+    values = d[n]
 
-    subsequences(s[1:],soFar+s[0])
-    subsequences(s[1:],soFar)
+    keypad(n//10,d,values[0]+soFar)
 
 
 
-s = "abc"
-ans = subsequences(s)
+d = {
+    2:["a","b","c"],
+    3:["d","e","f"],
+    4:["g","h","i"],
+    5:["j","k","l"],
+    6:["m","n","o"],
+    7:["p","q","r","s"],
+    8:["t","u","v"],
+    9:["w","x","y","z"]
+}
+
+n = 23
+ans = keypad(n,d)
+print(*ans)
