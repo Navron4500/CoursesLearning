@@ -1,4 +1,4 @@
-import queue
+
 from sys import maxsize
 
 # Adjaceny Matrix
@@ -12,40 +12,41 @@ class Graph:
         self.adjMatirx[v1][v2] = wt
         self.adjMatirx[v2][v1] = wt
 
-    def __getMinVertex(self,wt,visited):
-        
-        min_vertex = -1
+    def __minVertex(self,visited,dist):
+        idx = -1
+        mini = maxsize
         for i in range(self.nVertices):
-            if visited[i] is False and (min_vertex == -1 or wt[min_vertex] > wt[i]):
-                min_vertex = i
-        return min_vertex
+            if dist[i] < mini and visited[i] is False:
+                idx = i
+                mini = dist[i]
 
+        return idx
 
-    def prims(self):
-        visited = [False for i in range(self.nVertices)]    
-        parent = [-1 for i in range(self.nVertices)]
-        wt = [maxsize for i in range(self.nVertices)]
-        wt[0] = 0
+    def __getNeighbors(self,v,visited):
+        adj = []
+        for i in range(self.nVertices):
+            if self.adjMatirx[i][v] > 0 and visited[i] is False:
+                adj.append(i)
+        
+        return adj
 
+    
+    def dijsktra_algo(self):
+        visited = [False for i in range(self.nVertices)]
+        dist = [maxsize for _ in range(self.nVertices)]
+        dist[0] = 0
 
-        for i in range(self.nVertices-1):
-            min_vertex = self.__getMinVertex(wt,visited)
-            visited[min_vertex] = True
+        for _ in range(self.nVertices):
+            current = self.__minVertex(visited,dist)
+            visited[current] = True
 
-        # Explore the Neighbours of minVertex which is not visited and 
-        # Update the weight of them if requried
+            neighbors = self.__getNeighbors(current,visited)
+            for neigh in neighbors:
+                if dist[neigh] > dist[current] + self.adjMatirx[current][neigh]:
+                    dist[neigh] = dist[current] + self.adjMatirx[current][neigh]
+        
 
-            for j in range(self.nVertices):
-                if self.adjMatirx[min_vertex][j] > 0 and visited[j] is False:
-                    if(wt[j] > self.adjMatirx[min_vertex][j]):
-                        wt[j] = self.adjMatirx[min_vertex][j]
-                        parent[j] = min_vertex
-
-        for i in range(1,self.nVertices):
-            if parent[i] < i:
-                print(parent[i],i,wt[i])
-            else:
-                print(i,parent[i],wt[i])
+        return dist
 
 
 
@@ -53,11 +54,10 @@ class Graph:
 g = Graph(4)
 g.addEdge(0,1,3)
 g.addEdge(0,3,5)
+
 g.addEdge(1,2,1)
 g.addEdge(2,3,8)
-g.prims()
+ans = g.dijsktra_algo()
 
-# print("----------------------------")
-# print("""0 1 2
-# 2 3 2
-# 1 3 2""")
+for i in range(len(ans)):
+    print(i,ans[i])
